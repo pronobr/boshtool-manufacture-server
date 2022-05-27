@@ -74,13 +74,12 @@ try{
       }
      
     })
-    app.get('/admin/:email',verifyJWT, async(req,res) =>{
-      const email =req.params.email;
-      console.log("pro",email)
-      const user =await userCollection.findOne({email: email})
-      
-      const isAdmin =user.role === 'admin';
-      res.send({admin:isAdmin})
+    app.get('/admin/:email', async (req, res) => {
+      const email = req.params.email;
+      console.log(email)
+      const user = await userCollection.findOne({ email: email });
+      const isAdmin = user.role === 'admin';
+      res.send({ admin: isAdmin })
     })
      app.get('/tool/:id',async(req,res) =>{
       const id =req.params.id
@@ -92,6 +91,12 @@ try{
       res.send(product)
   })
 
+  app.delete("/delete/:email",verifyJWT, async(req,res) =>{
+    const email =req.params.email;
+    const query ={email:email}
+    const result = await bookingCollection.deleteOne(query)
+    res.send(result)
+})
   app.delete("/delete/:id",verifyJWT, async(req,res) =>{
     const id =req.params.id;
     const query ={_id:ObjectId(id)}
