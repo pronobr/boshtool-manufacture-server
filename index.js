@@ -181,13 +181,13 @@ try{
     const result = await bookingCollection.insertOne(booking);
     return res.send({ success: true, result });
   })
-  // app.post('/profile', async (req, res) => {
-  //   const user = req.body;
-  //   // const query = {profile}
-  //   // const exists = await bookingCollection.findOne(query);
-  //   const result = await profileCollection.insertOne(user);
-  //   res.send( result )
-  // })
+  app.post('/profile', async (req, res) => {
+    const user = req.body;
+    // const query = {profile}
+    // const exists = await bookingCollection.findOne(query);
+    const result = await profileCollection.insertOne(user);
+    res.send( result )
+  })
 
   app.post('/tools', verifyJWT, async (req, res) => {
     const product = req.body;
