@@ -38,6 +38,7 @@ try{
      const reviewCollection  =client.db('tools-manufacturer').collection('review')
      const paymentCollection = client.db('tools-manufacturer').collection('payments');
      const userCollection = client.db('tools-manufacturer').collection('user');
+     const profileCollection = client.db('tools-manufacturer').collection('profile');
      app.get('/tools', async(req,res) =>{
         const query = {};
         const cursor = serviceCollection.find(query);
@@ -141,6 +142,16 @@ try{
     const booking = await bookingCollection.findOne(query);
     res.send(booking);
   })
+
+  app.get('/profile/:id',async(req,res) =>{
+    const id =req.params.id
+
+    const query={_id:ObjectId(id)}
+    console.log(query)
+
+    const product =await profileCollection.findOne(query)
+    res.send(product)
+})
   app.get('/booking', verifyJWT, async (req, res) =>{
     const email =req.query.email;
     const decodedEmail = req.decoded.email;
@@ -169,6 +180,13 @@ try{
     }
     const result = await bookingCollection.insertOne(booking);
     return res.send({ success: true, result });
+  })
+  app.post('/profile', async (req, res) => {
+    const user = req.body;
+    // const query = {profile}
+    // const exists = await bookingCollection.findOne(query);
+    const result = await profileCollection.insertOne(user);
+    res.send( result )
   })
 
   app.post('/tools', verifyJWT, async (req, res) => {
